@@ -1,0 +1,47 @@
+`timescale 1ns/1ps
+module ALU_tb;
+    reg [7:0] A, B;
+    reg [3:0] ALU_Sel;
+    wire [7:0] ALU_Out;
+  
+    // Instantiate ALU
+    ALU uut (
+        .A(A),
+        .B(B),
+        .ALU_Sel(ALU_Sel),
+        .ALU_Out(ALU_Out)
+    );
+
+    initial begin
+        // Enable waveform dumping
+        $dumpfile("dump.vcd");
+      $dumpvars(1, ALU_tb);
+
+        // Print values in console
+      $monitor("Time=%0t | A=%b B=%b Sel=%b => Out=%b ",
+                  $time, A, B, ALU_Sel, ALU_Out);
+
+        // Test inputs
+        A = 8'b00000101; B = 8'b00001010; // A=5, B=10
+
+        // Try all ALU operations
+        ALU_Sel = 4'b0000; #10;  // Add
+        ALU_Sel = 4'b0001; #10;  // Sub
+        ALU_Sel = 4'b0010; #10;  // Mul
+        ALU_Sel = 4'b0011; #10;  // Div
+        ALU_Sel = 4'b0100; #10;  // Shift Left
+        ALU_Sel = 4'b0101; #10;  // Shift Right
+        ALU_Sel = 4'b0110; #10;  // Rotate Left
+        ALU_Sel = 4'b0111; #10;  // Rotate Right
+        ALU_Sel = 4'b1000; #10;  // AND
+        ALU_Sel = 4'b1001; #10;  // OR
+        ALU_Sel = 4'b1010; #10;  // XOR
+        ALU_Sel = 4'b1011; #10;  // NOR
+        ALU_Sel = 4'b1100; #10;  // NAND
+        ALU_Sel = 4'b1101; #10;  // XNOR
+        ALU_Sel = 4'b1110; #10;  // Greater than
+        ALU_Sel = 4'b1111; #10;  // Equal
+
+        $finish; // End simulation
+    end
+endmodule
